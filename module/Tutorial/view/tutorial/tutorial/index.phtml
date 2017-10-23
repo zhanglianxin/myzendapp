@@ -1,0 +1,16 @@
+            <div class="row content">
+                <h3>This is my first Zend application</h3>
+            </div>
+            <table class="table">
+                <tr>
+                    <th>Author</th>
+                    <th>Title</th>
+                    <th>&nbsp;</th>
+                </tr>
+<?php foreach ($this->data as $sampledata): ?>
+                <tr>
+                    <td><?= $this->escapeHtml($sampledata->author); ?></td>
+                    <td><?= $this->escapeHtml($sampledata->title); ?></td>
+                </tr>
+<?php endforeach; ?>
+            </table>
