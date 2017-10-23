@@ -2,13 +2,17 @@
 
 namespace Tutorial\Model;
 
-use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\InputFilter\InputFilterAwareInterface;
 
+use Zend\Filter\File\RenameUpload;
+use Zend\Validator\File\UploadFile;
+use Zend\InputFilter\FileInput;
+use Zend\InputFilter\InputFilter;
+
 class Book implements InputFilterAwareInterface
 {
-    public $id, $author, $title;
+    public $id, $author, $title, $imagepath;
 
     protected $inputFilter;
 
@@ -68,6 +72,16 @@ class Book implements InputFilterAwareInterface
                 ],
             ]);
 
+            $file = new FileInput('imagepath');
+            $file->getValidatorChain()->attach(new UploadFile());
+            $renameUpload = new RenameUpload([
+                'target' => './public/tmpuploads/file',
+                'randomize' => true,
+                'use_upload_extension' => true,
+            ]);
+            $file->getFilterChain()->attach($renameUpload);
+            $inputFilter->add($file);
+
             $this->inputFilter = $inputFilter;
         }
 
@@ -79,5 +93,14 @@ class Book implements InputFilterAwareInterface
         $this->id = empty($data['id']) ? null : $data['id'];
         $this->author = empty($data['author']) ? null : $data['author'];
         $this->title = empty($data['title']) ? null : $data['title'];
+        if (!empty($data['imagepath'])) {
+            if (is_array($data['imagepath'])) {
+                $this->imagepath = str_replace('./public', '', $data['imagepath']['tmp_name']);
+            } else {
+                $this->imagepath = $data['imagepath'];
+            }
+        } else {
+            $data['imagepath'] = null;
+        }
     }
 }

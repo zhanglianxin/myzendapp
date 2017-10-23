@@ -39,7 +39,10 @@ class TutorialController extends AbstractActionController
         if ($request->isPost()) {
             $book = new Book();
             $form->setInputFilter($book->getInputFilter());
-            $form->setData($request->getPost());
+            $post = array_merge_recursive($request->getPost()->toArray(),
+                $request->getFiles()->toArray());
+
+            $form->setData($post);
 
             if ($form->isValid()) {
                 $book->exchangeArray($form->getData());

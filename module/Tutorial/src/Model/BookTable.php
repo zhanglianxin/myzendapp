@@ -37,6 +37,7 @@ class BookTable
         $data = [
             'author' => $book->author,
             'title' => $book->title,
+            'imagepath' => $book->imagepath,
         ];
 
         $id = (int)$book->id;
