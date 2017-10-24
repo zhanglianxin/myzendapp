@@ -31,7 +31,10 @@
     "autoload-dev": {
         "psr-4": {
             "ApplicationTest\\": "module/Application/test/"
-        }
+        },
+        "files": [
+            "vendor/zendframework/zend-test/autoload/phpunit-class-aliases.php"
+        ]
     },
     "extra": [],
     "scripts": {
@@ -47,6 +50,7 @@
         "test": "phpunit"
     },
     "require-dev": {
-        "zendframework/zend-test": "^3.1"
+        "zendframework/zend-test": "^3.1",
+        "phpunit/phpunit": "^5.7"
     }
 }
