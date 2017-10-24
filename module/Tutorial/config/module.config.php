@@ -23,6 +23,9 @@ return [
         'template_path_stack' => [
             'tutorial' => __DIR__ . '/../view',
         ],
+        'strategies' => [
+            'ViewJsonStrategy',
+        ],
     ],
     'router' => [
         'routes' => [

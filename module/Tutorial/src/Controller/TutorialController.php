@@ -7,6 +7,7 @@ use Zend\View\Model\ViewModel;
 use Tutorial\Model\Book;
 use Tutorial\Model\BookTable;
 use Tutorial\Form\BookForm;
+use Zend\View\Model\JsonModel;
 
 class TutorialController extends AbstractActionController
 {
@@ -53,5 +54,30 @@ class TutorialController extends AbstractActionController
         }
 
         return compact('form');
+    }
+
+    public function ajaxAction()
+    {
+        $data = $this->table->fetchAll();
+        $request = $this->getRequest();
+        $query = $request->getQuery();
+
+        if ($request->isXmlHttpRequest() || $query->get('showJson') === '1') {
+            $jsonData = [];
+            foreach ($data as $sampledata) {
+                $temp = [
+                    'author' => $sampledata->author,
+                    'title' => $sampledata->title,
+                    'imagepath' => $sampledata->imagepath,
+                ];
+                $jsonData[] = $temp;
+            }
+            $view = new JsonModel($jsonData);
+            $view->setTerminal(true);
+        } else {
+            $view = new ViewModel();
+        }
+
+        return $view;
     }
 }

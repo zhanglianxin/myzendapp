@@ -1,0 +1,60 @@
+            <a id="loadbook" href="javascript:;">Load book information</a>
+            <table class="table">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <script>
+                (function () {
+                    let clickHandler = () => {
+                        let xhr = new XMLHttpRequest();
+                        let method = "POST";
+                        let url = '<?= $this->url("tutorial", ["action" => "ajax"]); ?>';
+                        let async = true;
+
+                        xhr.open(method, url, async);
+                        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                        let data = null;
+
+                        let insertResult = (result = null) => {
+                            if (result.length > 0) {
+                                let thead = document.querySelector('thead');
+                                let tbody = document.querySelector('tbody');
+
+                                let thTemplate = `<tr>
+                                    <th>Author</th><th>Title</th><th>Picture</th></tr>`;
+                                thead.innerHTML = thTemplate;
+
+                                let content = '';
+                                for (let book of result) {
+                                    let {author, title, imagepath} = book;
+                                    // imagepath = (imagepath === null ? '' : imagepath);
+                                    imagepath = imagepath || '';
+                                    let tdTemplate = `<tr><td>${author}</td><td>${title}</td>
+                                        <td><img src="${imagepath}" /></td></tr>`;
+                                    content += tdTemplate;
+                                }
+                                tbody.innerHTML = content;
+                            }
+                        };
+                        let loadHandler = () => {
+                            if (xhr.responseText !== '') {
+                                let jsonResult = JSON.parse(xhr.responseText);
+                                insertResult(jsonResult);
+                            }
+                        };
+                        let errorHandler = (msg) => {
+                            console.log(msg);
+                        };
+
+                        xhr.onload = loadHandler;
+                        xhr.onerror = errorHandler;
+
+                        xhr.send(data);
+                    };
+
+                    document.querySelector('a#loadbook').addEventListener('click', clickHandler);
+                })();
+            </script>
