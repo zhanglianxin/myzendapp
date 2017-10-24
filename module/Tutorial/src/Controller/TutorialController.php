@@ -8,6 +8,7 @@ use Tutorial\Model\Book;
 use Tutorial\Model\BookTable;
 use Tutorial\Form\BookForm;
 use Zend\View\Model\JsonModel;
+use Zend\Session\Container;
 
 class TutorialController extends AbstractActionController
 {
@@ -77,6 +78,23 @@ class TutorialController extends AbstractActionController
         } else {
             $view = new ViewModel();
         }
+
+        return $view;
+    }
+
+    public function sessionAction()
+    {
+        $container = new Container();
+
+        if (!isset($container->count)) {
+            $container->count = 0;
+        } else {
+            $container->count++;
+        }
+
+        $view = new ViewModel([
+            'count' => $container->count,
+        ]);
 
         return $view;
     }
