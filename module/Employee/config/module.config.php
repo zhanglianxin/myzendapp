@@ -8,7 +8,12 @@ use Zend\Router\Http\Segment;
 return [
     'controllers' => [
         'factories' => [
-            Controller\EmployeeController::class => InvokableFactory::class,
+            Controller\EmployeeController::class => function ($container) {
+                $employeeTable = $container->get(Model\EmployeeTable::class);
+                $employeeController = new Controller\EmployeeController($employeeTable);
+
+                return $employeeController;
+            },
         ],
     ],
     'view_manager' => [

@@ -1,3 +1,33 @@
+<?php
+
+$title = 'Employee application';
+$this->headTitle($title);
+
+?>
             <div class="row content">
                 <h3>This is my first Zend application</h3>
             </div>
+<?php if (count($data) > 0): ?>
+            <table class="table">
+                <tr>
+                    <th>Employee Name</th>
+                    <th>Employee Job</th>
+                    <th>Edit/Delete operations</th>
+                </tr>
+<?php foreach ($data as $empdata): ?>
+                <tr>
+                    <td><?= $this->escapeHtml($empdata->emp_name); ?></td>
+                    <td><?= $this->escapeHtml($empdata->emp_job); ?></td>
+                    <td><a href="<?= $this->url(
+                            'employee', [
+                                'action' => 'edit',
+                                'id' => $empdata->id,
+                            ]) ?>">Edit</a> | <a href="<?= $this->url(
+                            'employee', [
+                                'action' => 'edit',
+                                'id' => $empdata->id,
+                            ]) ?>">Delete</a></td>
+                </tr>
+<?php endforeach; ?>
+            </table>
+<?php endif; ?>

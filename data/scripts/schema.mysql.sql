@@ -11,3 +11,10 @@ CREATE TABLE book (
     imagepath VARCHAR(64) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT "";
+
+CREATE TABLE employee (
+    id int(11) NOT NULL AUTO_INCREMENT,
+    emp_name VARCHAR(32) NOT NULL,
+    emp_job VARCHAR(32) NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT "";
