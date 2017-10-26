@@ -1,0 +1,23 @@
+<?php
+
+$title = 'Edit employee records';
+$this->headTitle($title);
+
+?>
+<h1><?= $this->escapeHtml($title);?></h1>
+<?php
+
+if (!empty($form)) {
+    $form->setAttribute('action', $this->url('employee', [
+        'action' => 'edit',
+        'id' => $this->id,
+    ]));
+    $form->prepare();
+
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('id'));
+    echo $this->formRow($form->get('emp_name')) . '<br>';
+    echo $this->formRow($form->get('emp_job')) . '<br>';
+    echo $this->formSubmit($form->get('submit'));
+    echo $this->form()->closeTag($form);
+}
