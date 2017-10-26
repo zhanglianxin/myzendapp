@@ -53,4 +53,9 @@ class EmployeeTable
             }
         }
     }
+
+    public function deleteEmployee($id)
+    {
+        $this->tableGateway->delete(compact('id'));
+    }
 }

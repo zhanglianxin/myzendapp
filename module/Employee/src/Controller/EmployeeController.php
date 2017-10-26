@@ -56,7 +56,6 @@ class EmployeeController extends AbstractActionController
         $id = (int)$this->params()->fromRoute('id', 0);
 
         if (!$id) {
-            var_dump('ha');
             return $this->redirect()->toRoute('employee', ['action' => 'add']);
         }
 
@@ -84,5 +83,30 @@ class EmployeeController extends AbstractActionController
         }
 
         return compact('id', 'form');
+    }
+
+    public function deleteAction()
+    {
+        $id = (int)$this->params()->fromRoute('id', 0);
+
+        if (!$id) {
+            return $this->redirect()->toRoute('employee', ['action' => 'add']);
+        }
+
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+
+            if ($del === 'Yes') {
+                $id = (int)$request->getPost('id');
+                $this->table->deleteEmployee($id);
+            }
+            return $this->redirect()->toRoute('employee');
+        }
+
+        $employee = $this->table->getEmployee($id);
+
+        return compact('id', 'employee');
     }
 }
