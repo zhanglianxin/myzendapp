@@ -96,7 +96,7 @@ $ ./vendor/bin/phpunit
 
 ## Concepts
 
-Three most import components:
+Three most important components:
 
 * **Event Manager**
 
@@ -311,7 +311,111 @@ configuration to the whole application. The structure is as shown below:
 
 ## Creating a Module
 
+0. Create the **Tutorial** module.
+
+```php
+<?php
+// /module/Tutorial/src/Module.php
+
+namespace Tutorial;
+
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+
+class Module implements ConfigProviderInterface
+{
+    public function getConfig()
+    {
+        return include __DIR__ . '/../config/module.config.php';
+    }
+}
+```
+
+1. Configure the **Tutorial** module.
+
+```json
+// /composer.json
+
+"autoload": {
+    "psr-4": {
+        "Application\\": "module/Application/src",
+        "Turorial\\": "module/Turorial/src"
+    }
+}
+```
+
+2. Update the application.
+
+```shell
+$ composer update
+```
+
+3. Create the **Tutorial** module configuration file.
+
+```php
+<?php
+// /module/Tutorial/config/module.config.php
+
+namespace Tutorial;
+
+use Zend\ServiceManager\Factory\InvokableFactory;
+use Zend\Router\Http\Segment;
+
+return [
+    'controller' => [
+        'factories' => [
+            Controller\TutorialController::class => InvokableFactory::class,
+        ],
+    ],
+    'view_manager' => [
+        'template_path_stack' => [
+            'tutorial' => __DIR__ . '/../view',
+        ],
+    ],
+];
+```
+
+4. Configure the **Tutorial** module in the application level configuration file.
+
+```php
+// /config/modules.config.php
+
+return [
+    'Zend\Router',
+    'Zend\Validator',
+    'Application',
+    'Tutorial',
+];
+```
+
 ## Controllers
+
+0. Create the **Tutorial** controller.
+
+```php
+<?php
+// /module/Tutorial/src/Controller/TutorialController.php
+
+namespace Tutorial\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
+
+class TutorialController extends AbstractActionController
+{
+    public function indexAction()
+    {
+        $view = new ViewModel();
+
+        return $view;
+    }
+}
+```
+
+1. Create the corresponding view file.
+
+```shell
+$ touch /module/Tutorial/view/tutorial/tutorial/index.phtml
+```
 
 ## Routing
 
